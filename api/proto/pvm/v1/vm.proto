@@ -1,0 +1,119 @@
+syntax = "proto3";
+
+package pvm.v1;
+
+option go_package = "github.com/ankele/pvm/api/gen/pvm/v1;pvmv1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "pvm/v1/common.proto";
+
+service VMService {
+  rpc ListVMs(google.protobuf.Empty) returns (ListVMsResponse) {
+    option (google.api.http) = {
+      get: "/v1/vms"
+    };
+  }
+
+  rpc GetVM(NameRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      get: "/v1/vms/{name}"
+    };
+  }
+
+  rpc DefineVM(DefineVMRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms:define"
+      body: "*"
+    };
+  }
+
+  rpc InstallVM(InstallVMRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms:install"
+      body: "*"
+    };
+  }
+
+  rpc LaunchVM(LaunchVMRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms:launch"
+      body: "*"
+    };
+  }
+
+  rpc StartVM(NameRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{name}:start"
+      body: "*"
+    };
+  }
+
+  rpc ShutdownVM(NameRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{name}:shutdown"
+      body: "*"
+    };
+  }
+
+  rpc DestroyVM(NameRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{name}:destroy"
+      body: "*"
+    };
+  }
+
+  rpc RebootVM(NameRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{name}:reboot"
+      body: "*"
+    };
+  }
+
+  rpc PauseVM(NameRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{name}:pause"
+      body: "*"
+    };
+  }
+
+  rpc ResumeVM(NameRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{name}:resume"
+      body: "*"
+    };
+  }
+
+  rpc UndefineVM(NameRequest) returns (ActionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/vms/{name}"
+    };
+  }
+
+  rpc AddNIC(AddNICRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{vm}/nics"
+      body: "*"
+    };
+  }
+
+  rpc UpdateNIC(UpdateNICRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      patch: "/v1/vms/{vm}/nics/{alias}"
+      body: "*"
+    };
+  }
+
+  rpc RemoveNIC(RemoveNICRequest) returns (VMResponse) {
+    option (google.api.http) = {
+      delete: "/v1/vms/{vm}/nics/{alias}"
+    };
+  }
+
+  rpc GetGraphics(NameRequest) returns (GraphicsInfoResponse) {
+    option (google.api.http) = {
+      get: "/v1/vms/{name}/graphics"
+    };
+  }
+}
+

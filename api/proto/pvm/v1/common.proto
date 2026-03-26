@@ -1,0 +1,416 @@
+syntax = "proto3";
+
+package pvm.v1;
+
+option go_package = "github.com/ankele/pvm/api/gen/pvm/v1;pvmv1";
+
+import "google/protobuf/timestamp.proto";
+
+message NameRequest {
+  string name = 1;
+}
+
+message PoolNameRequest {
+  string pool = 1;
+}
+
+message GetVolumeRequest {
+  string pool = 1;
+  string name = 2;
+}
+
+message DeleteVMSnapshotRequest {
+  string vm = 1;
+  string snapshot = 2;
+}
+
+message DeleteVolumeSnapshotRequest {
+  string pool = 1;
+  string volume = 2;
+  string snapshot = 3;
+}
+
+message SetAutostartRequest {
+  string name = 1;
+  bool enabled = 2;
+}
+
+message DefineVMRequest {
+  DomainSpec spec = 1;
+}
+
+message InstallVMRequest {
+  InstallVMSpec spec = 1;
+}
+
+message LaunchVMRequest {
+  LaunchVMSpec spec = 1;
+}
+
+message AddNICRequest {
+  string vm = 1;
+  NICSpec spec = 2;
+}
+
+message UpdateNICRequest {
+  string vm = 1;
+  string alias = 2;
+  NICSpec spec = 3;
+}
+
+message RemoveNICRequest {
+  string vm = 1;
+  string alias = 2;
+}
+
+message DefinePoolRequest {
+  PoolSpec spec = 1;
+}
+
+message CreateVolumeRequest {
+  VolumeCreateSpec spec = 1;
+}
+
+message ResizeVolumeRequest {
+  VolumeResizeSpec spec = 1;
+}
+
+message DefineNetworkRequest {
+  NetworkSpec spec = 1;
+}
+
+message DefineInterfaceRequest {
+  InterfaceSpec spec = 1;
+}
+
+message CreateVMSnapshotRequest {
+  VMSnapshotSpec spec = 1;
+}
+
+message CreateVolumeSnapshotRequest {
+  VolumeSnapshotSpec spec = 1;
+}
+
+message SystemInfoResponse {
+  SystemInfo info = 1;
+}
+
+message HealthResponse {
+  string status = 1;
+}
+
+message VMResponse {
+  VM vm = 1;
+}
+
+message ListVMsResponse {
+  repeated VM items = 1;
+}
+
+message GraphicsInfoResponse {
+  GraphicsInfo info = 1;
+}
+
+message PoolResponse {
+  StoragePool pool = 1;
+}
+
+message ListPoolsResponse {
+  repeated StoragePool items = 1;
+}
+
+message VolumeResponse {
+  Volume volume = 1;
+}
+
+message ListVolumesResponse {
+  repeated Volume items = 1;
+}
+
+message NetworkResponse {
+  Network network = 1;
+}
+
+message ListNetworksResponse {
+  repeated Network items = 1;
+}
+
+message InterfaceResponse {
+  HostInterface iface = 1;
+}
+
+message ListInterfacesResponse {
+  repeated HostInterface items = 1;
+}
+
+message SnapshotResponse {
+  Snapshot snapshot = 1;
+}
+
+message ListSnapshotsResponse {
+  repeated Snapshot items = 1;
+}
+
+message ActionResponse {
+  string message = 1;
+}
+
+message SystemInfo {
+  string backend = 1;
+  string uri = 2;
+  string platform = 3;
+  bool supports_libvirt = 4;
+  bool supports_zfs = 5;
+}
+
+message DomainSpec {
+  string name = 1;
+  string description = 2;
+  uint64 memory_mib = 3;
+  uint32 vcpu = 4;
+  string machine = 5;
+  string arch = 6;
+  bool autostart = 7;
+  repeated DiskSpec disks = 8;
+  repeated NICSpec networks = 9;
+  repeated GraphicsSpec graphics = 10;
+}
+
+message InstallVMSpec {
+  string name = 1;
+  string description = 2;
+  uint64 memory_mib = 3;
+  uint32 vcpu = 4;
+  string machine = 5;
+  string arch = 6;
+  string pool = 7;
+  string disk_name = 8;
+  uint64 disk_size_gib = 9;
+  string disk_format = 10;
+  string iso_path = 11;
+  repeated NICSpec networks = 12;
+  repeated GraphicsSpec graphics = 13;
+  bool autostart = 14;
+}
+
+message LaunchVMSpec {
+  string name = 1;
+  string description = 2;
+  string mode = 3;
+  uint64 memory_mib = 4;
+  uint32 vcpu = 5;
+  string machine = 6;
+  string arch = 7;
+  string image_path = 8;
+  string source_volume = 9;
+  string target_pool = 10;
+  string target_volume_name = 11;
+  string target_format = 12;
+  repeated NICSpec networks = 13;
+  repeated GraphicsSpec graphics = 14;
+  bool autostart = 15;
+}
+
+message NICSpec {
+  string alias = 1;
+  string network = 2;
+  string bridge = 3;
+  string mac = 4;
+  string model = 5;
+}
+
+message GraphicsSpec {
+  string type = 1;
+  string listen = 2;
+  bool auto_port = 3;
+  int32 port = 4;
+  int32 tls_port = 5;
+}
+
+message DiskSpec {
+  string device = 1;
+  string bus = 2;
+  string target = 3;
+  string source = 4;
+  string format = 5;
+  string pool = 6;
+  string volume = 7;
+  bool read_only = 8;
+}
+
+message PoolSpec {
+  string name = 1;
+  string type = 2;
+  string source_name = 3;
+  string target_path = 4;
+  bool autostart = 5;
+}
+
+message VolumeCreateSpec {
+  string pool = 1;
+  string name = 2;
+  uint64 capacity_bytes = 3;
+  uint64 allocation_bytes = 4;
+  string format = 5;
+  string type = 6;
+}
+
+message VolumeResizeSpec {
+  string pool = 1;
+  string name = 2;
+  uint64 capacity_bytes = 3;
+}
+
+message NetworkSpec {
+  string name = 1;
+  string bridge = 2;
+  string forward_mode = 3;
+  string domain = 4;
+  string ipv4_cidr = 5;
+  string dhcp_start = 6;
+  string dhcp_end = 7;
+  bool autostart = 8;
+}
+
+message InterfaceProtocolSpec {
+  string family = 1;
+  string address = 2;
+  uint32 prefix = 3;
+  string gateway = 4;
+  bool dhcp = 5;
+}
+
+message InterfaceSpec {
+  string name = 1;
+  string type = 2;
+  string mac = 3;
+  string start_mode = 4;
+  uint32 mtu = 5;
+  repeated string bridge_members = 6;
+  repeated InterfaceProtocolSpec protocols = 7;
+}
+
+message VMSnapshotSpec {
+  string vm = 1;
+  string name = 2;
+  string description = 3;
+  bool include_memory = 4;
+  bool quiesce = 5;
+}
+
+message VolumeSnapshotSpec {
+  string pool = 1;
+  string volume = 2;
+  string name = 3;
+}
+
+message VM {
+  string name = 1;
+  string uuid = 2;
+  string state = 3;
+  bool persistent = 4;
+  bool autostart = 5;
+  bool shared_source = 6;
+  string source_mode = 7;
+  uint64 memory_mib = 8;
+  uint64 current_memory_mib = 9;
+  uint32 vcpu = 10;
+  uint64 cpu_time_nanos = 11;
+  repeated VMDisk disks = 12;
+  repeated VMNIC nics = 13;
+  repeated VMGraphics graphics = 14;
+}
+
+message VMNIC {
+  string alias = 1;
+  string mac = 2;
+  string model = 3;
+  string network = 4;
+  string bridge = 5;
+}
+
+message VMDisk {
+  string device = 1;
+  string bus = 2;
+  string target = 3;
+  string source = 4;
+  string format = 5;
+  string pool = 6;
+  string volume = 7;
+  bool read_only = 8;
+}
+
+message VMGraphics {
+  string type = 1;
+  string listen = 2;
+  int32 port = 3;
+  int32 tls_port = 4;
+  int32 websocket = 5;
+}
+
+message GraphicsInfo {
+  string vm = 1;
+  repeated VMGraphics entries = 2;
+}
+
+message StoragePool {
+  string name = 1;
+  string uuid = 2;
+  string type = 3;
+  bool active = 4;
+  bool autostart = 5;
+  uint64 capacity_bytes = 6;
+  uint64 allocation_bytes = 7;
+  uint64 available_bytes = 8;
+  string target_path = 9;
+  string source_name = 10;
+}
+
+message Volume {
+  string pool = 1;
+  string name = 2;
+  string key = 3;
+  string path = 4;
+  string type = 5;
+  string format = 6;
+  uint64 capacity_bytes = 7;
+  uint64 allocation_bytes = 8;
+  string backing_path = 9;
+}
+
+message Network {
+  string name = 1;
+  string uuid = 2;
+  string bridge = 3;
+  string forward_mode = 4;
+  string domain = 5;
+  string ipv4_cidr = 6;
+  string dhcp_start = 7;
+  string dhcp_end = 8;
+  bool active = 9;
+  bool autostart = 10;
+}
+
+message HostInterface {
+  string name = 1;
+  string mac = 2;
+  string type = 3;
+  string start_mode = 4;
+  bool active = 5;
+  uint32 mtu = 6;
+  repeated string bridge_members = 7;
+  repeated string addresses = 8;
+}
+
+message Snapshot {
+  string kind = 1;
+  string name = 2;
+  string parent = 3;
+  string domain = 4;
+  string pool = 5;
+  string volume = 6;
+  string description = 7;
+  google.protobuf.Timestamp created_at = 8;
+  string state = 9;
+}
+

@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package pvm.v1;
+
+option go_package = "github.com/ankele/pvm/api/gen/pvm/v1;pvmv1";
+
+import "google/api/annotations.proto";
+import "pvm/v1/common.proto";
+
+service SnapshotService {
+  rpc CreateVMSnapshot(CreateVMSnapshotRequest) returns (SnapshotResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{spec.vm}/snapshots"
+      body: "*"
+    };
+  }
+
+  rpc ListVMSnapshots(NameRequest) returns (ListSnapshotsResponse) {
+    option (google.api.http) = {
+      get: "/v1/vms/{name}/snapshots"
+    };
+  }
+
+  rpc DeleteVMSnapshot(DeleteVMSnapshotRequest) returns (ActionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/vms/{vm}/snapshots/{snapshot}"
+    };
+  }
+
+  rpc RevertVMSnapshot(DeleteVMSnapshotRequest) returns (SnapshotResponse) {
+    option (google.api.http) = {
+      post: "/v1/vms/{vm}/snapshots/{snapshot}:revert"
+      body: "*"
+    };
+  }
+
+  rpc CreateVolumeSnapshot(CreateVolumeSnapshotRequest) returns (SnapshotResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools/{spec.pool}/volumes/{spec.volume}/snapshots"
+      body: "*"
+    };
+  }
+
+  rpc ListVolumeSnapshots(GetVolumeRequest) returns (ListSnapshotsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pools/{pool}/volumes/{name}/snapshots"
+    };
+  }
+
+  rpc DeleteVolumeSnapshot(DeleteVolumeSnapshotRequest) returns (ActionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/pools/{pool}/volumes/{volume}/snapshots/{snapshot}"
+    };
+  }
+
+  rpc RollbackVolumeSnapshot(DeleteVolumeSnapshotRequest) returns (SnapshotResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools/{pool}/volumes/{volume}/snapshots/{snapshot}:rollback"
+      body: "*"
+    };
+  }
+}

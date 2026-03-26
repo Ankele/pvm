@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package pvm.v1;
+
+option go_package = "github.com/ankele/pvm/api/gen/pvm/v1;pvmv1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "pvm/v1/common.proto";
+
+service NetworkService {
+  rpc ListNetworks(google.protobuf.Empty) returns (ListNetworksResponse) {
+    option (google.api.http) = {
+      get: "/v1/networks"
+    };
+  }
+
+  rpc GetNetwork(NameRequest) returns (NetworkResponse) {
+    option (google.api.http) = {
+      get: "/v1/networks/{name}"
+    };
+  }
+
+  rpc DefineNetwork(DefineNetworkRequest) returns (NetworkResponse) {
+    option (google.api.http) = {
+      post: "/v1/networks"
+      body: "*"
+    };
+  }
+
+  rpc StartNetwork(NameRequest) returns (NetworkResponse) {
+    option (google.api.http) = {
+      post: "/v1/networks/{name}:start"
+      body: "*"
+    };
+  }
+
+  rpc DestroyNetwork(NameRequest) returns (NetworkResponse) {
+    option (google.api.http) = {
+      post: "/v1/networks/{name}:destroy"
+      body: "*"
+    };
+  }
+
+  rpc SetNetworkAutostart(SetAutostartRequest) returns (NetworkResponse) {
+    option (google.api.http) = {
+      post: "/v1/networks/{name}:autostart"
+      body: "*"
+    };
+  }
+
+  rpc UndefineNetwork(NameRequest) returns (ActionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/networks/{name}"
+    };
+  }
+}
+

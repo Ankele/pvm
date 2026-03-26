@@ -1,0 +1,97 @@
+syntax = "proto3";
+
+package pvm.v1;
+
+option go_package = "github.com/ankele/pvm/api/gen/pvm/v1;pvmv1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "pvm/v1/common.proto";
+
+service StorageService {
+  rpc ListPools(google.protobuf.Empty) returns (ListPoolsResponse) {
+    option (google.api.http) = {
+      get: "/v1/pools"
+    };
+  }
+
+  rpc GetPool(NameRequest) returns (PoolResponse) {
+    option (google.api.http) = {
+      get: "/v1/pools/{name}"
+    };
+  }
+
+  rpc DefinePool(DefinePoolRequest) returns (PoolResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools"
+      body: "*"
+    };
+  }
+
+  rpc StartPool(NameRequest) returns (PoolResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools/{name}:start"
+      body: "*"
+    };
+  }
+
+  rpc DestroyPool(NameRequest) returns (PoolResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools/{name}:destroy"
+      body: "*"
+    };
+  }
+
+  rpc SetPoolAutostart(SetAutostartRequest) returns (PoolResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools/{name}:autostart"
+      body: "*"
+    };
+  }
+
+  rpc UndefinePool(NameRequest) returns (ActionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/pools/{name}"
+    };
+  }
+
+  rpc RefreshPool(NameRequest) returns (PoolResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools/{name}:refresh"
+      body: "*"
+    };
+  }
+
+  rpc ListVolumes(PoolNameRequest) returns (ListVolumesResponse) {
+    option (google.api.http) = {
+      get: "/v1/pools/{pool}/volumes"
+    };
+  }
+
+  rpc GetVolume(GetVolumeRequest) returns (VolumeResponse) {
+    option (google.api.http) = {
+      get: "/v1/pools/{pool}/volumes/{name}"
+    };
+  }
+
+  rpc CreateVolume(CreateVolumeRequest) returns (VolumeResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools/{spec.pool}/volumes"
+      body: "*"
+    };
+  }
+
+  rpc DeleteVolume(GetVolumeRequest) returns (ActionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/pools/{pool}/volumes/{name}"
+    };
+  }
+
+  rpc ResizeVolume(ResizeVolumeRequest) returns (VolumeResponse) {
+    option (google.api.http) = {
+      post: "/v1/pools/{spec.pool}/volumes/{spec.name}:resize"
+      body: "*"
+    };
+  }
+}
+

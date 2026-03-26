@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package pvm.v1;
+
+option go_package = "github.com/ankele/pvm/api/gen/pvm/v1;pvmv1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "pvm/v1/common.proto";
+
+service InterfaceService {
+  rpc ListInterfaces(google.protobuf.Empty) returns (ListInterfacesResponse) {
+    option (google.api.http) = {
+      get: "/v1/interfaces"
+    };
+  }
+
+  rpc GetInterface(NameRequest) returns (InterfaceResponse) {
+    option (google.api.http) = {
+      get: "/v1/interfaces/{name}"
+    };
+  }
+
+  rpc DefineInterface(DefineInterfaceRequest) returns (InterfaceResponse) {
+    option (google.api.http) = {
+      post: "/v1/interfaces"
+      body: "*"
+    };
+  }
+
+  rpc StartInterface(NameRequest) returns (InterfaceResponse) {
+    option (google.api.http) = {
+      post: "/v1/interfaces/{name}:start"
+      body: "*"
+    };
+  }
+
+  rpc DestroyInterface(NameRequest) returns (InterfaceResponse) {
+    option (google.api.http) = {
+      post: "/v1/interfaces/{name}:destroy"
+      body: "*"
+    };
+  }
+
+  rpc UndefineInterface(NameRequest) returns (ActionResponse) {
+    option (google.api.http) = {
+      delete: "/v1/interfaces/{name}"
+    };
+  }
+}
+

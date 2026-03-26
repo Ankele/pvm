@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package pvm.v1;
+
+option go_package = "github.com/ankele/pvm/api/gen/pvm/v1;pvmv1";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "pvm/v1/common.proto";
+
+service SystemService {
+  rpc GetInfo(google.protobuf.Empty) returns (SystemInfoResponse) {
+    option (google.api.http) = {
+      get: "/v1/system"
+    };
+  }
+
+  rpc Health(google.protobuf.Empty) returns (HealthResponse) {
+    option (google.api.http) = {
+      get: "/v1/health"
+    };
+  }
+}
+
